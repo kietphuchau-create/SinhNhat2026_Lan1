@@ -201,4 +201,30 @@ window.addEventListener('DOMContentLoaded', () => {
   
   // 3. Kích hoạt chu trình mở quà và nhạc nền
   initGiftBox('assets/audio/background.mp3', rotatingContainer);
+
+  // 4. Yêu cầu full màn hình và xoay ngang cho thiết bị di động khi chạm vào màn hình
+  document.addEventListener('click', function requestLandscapeFullscreen() {
+    // Nhận diện điện thoại hoặc màn hình nhỏ
+    if (window.innerWidth <= 900 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      const docElm = document.documentElement;
+      
+      const tryLockOrientation = () => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(err => console.log("Không thể khóa hướng:", err));
+        }
+      };
+
+      if (docElm.requestFullscreen) {
+        docElm.requestFullscreen().then(tryLockOrientation).catch(err => console.log("Lỗi fullscreen:", err));
+      } else if (docElm.webkitRequestFullscreen) { /* Safari */
+        docElm.webkitRequestFullscreen();
+        setTimeout(tryLockOrientation, 500);
+      } else if (docElm.msRequestFullscreen) { /* IE11 */
+        docElm.msRequestFullscreen();
+        setTimeout(tryLockOrientation, 500);
+      }
+    }
+    // Gỡ bỏ sự kiện sau khi đã chạy lần đầu
+    document.removeEventListener('click', requestLandscapeFullscreen);
+  }, { once: true });
 });
