@@ -941,3 +941,58 @@ body {
     padding: 10px 28px;
   }
 }
+
+/* ==========================================
+   CẢNH BÁO XOAY MÀN HÌNH (LANDSCAPE WARNING)
+   ========================================== */
+#landscape-warning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1c29 0%, #0d0e15 100%);
+  z-index: 100000;
+  color: #fff;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#landscape-warning .warning-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+}
+
+#landscape-warning h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffca3a;
+}
+
+#landscape-warning p {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #e2e8f0;
+}
+
+@keyframes rotatePhone {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
+  100% { transform: rotate(-90deg); }
+}
+
+/* Chỉ hiển thị trên thiết bị di động khi ở chế độ màn hình dọc */
+@media screen and (max-width: 899px) and (orientation: portrait) {
+  #landscape-warning {
+    display: flex;
+  }
+}
