@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Loves</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&family=Fredoka:wght@600;700&family=Great+Vibes&family=Lilita+One&family=Montserrat:ital,wght@0,300;0,500;0,700;1,300&family=Outfit:wght@300;400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sacramento&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- Màn hình hộp quà mở đầu -->
+  <div id="gift-overlay">
+    <div class="gift-container">
+      <div class="gift-box">
+        <div class="bow">
+          <div class="bow-loop bow-left"></div>
+          <div class="bow-loop bow-right"></div>
+          <div class="bow-center"></div>
+        </div>
+        <div class="gift-lid">
+          <div class="ribbon-vertical-lid"></div>
+        </div>
+        <div class="gift-body">
+          <div class="ribbon-vertical-body"></div>
+        </div>
+      </div>
+      <h2 class="gift-text">Nhấn để mở món quà</h2>
+    </div>
+  </div>
+
+  <!-- Màn hình giới thiệu sinh nhật -->
+  <div id="intro-overlay" class="hidden">
+    <!-- Hiệu ứng cánh hoa đào rơi -->
+    <div id="petal-container"></div>
+
+    <div class="intro-content">
+      <!-- Cột bên trái: Happy Birthday, Ngày sinh, Nút Mở thư -->
+      <div class="intro-left">
+        <div class="happy-birthday-title">
+          <div class="line-happy">
+            <span class="letter" data-text="H" style="--i:1; transform: rotate(-7deg) translateY(2px);">H</span>
+            <span class="letter" data-text="a" style="--i:2; transform: rotate(5deg) translateY(-2px);">a</span>
+            <span class="letter" data-text="p" style="--i:3; transform: rotate(-4deg) translateY(1px);">p</span>
+            <span class="letter" data-text="p" style="--i:4; transform: rotate(6deg) translateY(-3px);">p</span>
+            <span class="letter" data-text="y"
+              style="--i:5; transform: rotate(-5deg) translateY(2px); position: relative;">y<img
+                src="assets/images/MuSinhNhat.png" class="party-hat-img" alt="Mũ Sinh Nhật"></span>
+          </div>
+          <div class="line-birthday">
+            <span class="letter" data-text="B"
+              style="--i:6; transform: rotate(-10deg) translateY(-5px) scale(1.06);">B</span>
+            <span class="letter" data-text="i" style="--i:7; transform: rotate(4deg) translateY(-1px);">i</span>
+            <span class="letter" data-text="r" style="--i:8; transform: rotate(-6deg) translateY(2px);">r</span>
+            <span class="letter" data-text="t" style="--i:9; transform: rotate(5deg) translateY(-3px);">t</span>
+            <span class="letter" data-text="h" style="--i:10; transform: rotate(-3deg) translateY(1px);">h</span>
+            <span class="letter" data-text="d" style="--i:11; transform: rotate(6deg) translateY(-4px);">d</span>
+            <span class="letter" data-text="a" style="--i:12; transform: rotate(-4deg) translateY(2px);">a</span>
+            <span class="letter" data-text="y" style="--i:13; transform: rotate(8deg) translateY(-2px);">y</span>
+          </div>
+        </div>
+        <div class="date-badge">★ 26 - 06 ★</div>
+        <button class="open-letter-btn">Mở thư</button>
+      </div>
+
+      <!-- Cột bên phải: Ảnh tròn, Bong bóng, Tên, Thỏ con -->
+      <div class="intro-right">
+        <div class="profile-area">
+          <!-- Bong bóng bay quanh ảnh -->
+          <div class="balloon-container">
+            <!-- Bong bóng trái trên -->
+            <div class="balloon balloon-top-left">
+              <img src="assets/images/BongBong.png" class="balloon-img" alt="Bong bóng">
+            </div>
+            <!-- Bong bóng phải dưới -->
+            <div class="balloon balloon-bottom-right">
+              <img src="assets/images/BongBong.png" class="balloon-img" alt="Bong bóng">
+            </div>
+          </div>
+
+          <!-- Khung ảnh tròn -->
+          <div class="profile-circle slideshow">
+            <img src="assets/images/photo_1.jpg" alt="Birthday Girl 1" class="slide" />
+            <img src="assets/images/photo_2.jpg" alt="Birthday Girl 2" class="slide" />
+            <img src="assets/images/photo_3.jpg" alt="Birthday Girl 3" class="slide" />
+            <img src="assets/images/photo_4.jpg" alt="Birthday Girl 4" class="slide" />
+          </div>
+
+          <!-- Nhãn tên bên dưới ảnh -->
+          <div class="name-badge-container">
+            <div class="name-badge">🧡 Trần Ngọc Phận 🧡</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Thỏ hoạt hình dễ thương chúc mừng (được đưa ra giữa nội dung) -->
+      <div class="cute-rabbit-container">
+        <!-- Ta dùng SVG thỏ chúc mừng sinh nhật chuyển động đáng yêu -->
+        <svg class="cute-rabbit" viewBox="0 0 100 100" width="120" height="120">
+          <ellipse cx="50" cy="70" rx="18" ry="13" fill="#ffffff" stroke="#333" stroke-width="2.5" />
+          <circle cx="50" cy="50" r="14" fill="#ffffff" stroke="#333" stroke-width="2.5" />
+          <path d="M43 38 C38 20, 45 20, 45 36" fill="#ffffff" stroke="#333" stroke-width="2.5"
+            stroke-linecap="round" />
+          <path d="M44 34 C42 24, 44 24, 44 32" fill="#ffccd5" stroke-linecap="round" />
+          <path d="M57 38 C62 20, 55 20, 55 36" fill="#ffffff" stroke="#333" stroke-width="2.5"
+            stroke-linecap="round" />
+          <path d="M56 34 C58 24, 56 24, 56 32" fill="#ffccd5" stroke-linecap="round" />
+          <circle cx="45" cy="48" r="1.5" fill="#333" />
+          <circle cx="55" cy="48" r="1.5" fill="#333" />
+          <ellipse cx="41" cy="51" rx="2.5" ry="1.5" fill="#ff8fa3" />
+          <ellipse cx="59" cy="51" rx="2.5" ry="1.5" fill="#ff8fa3" />
+          <path d="M49 51 L51 51 M50 51 L50 53 C49.5 54, 48.5 54, 48.5 53 M50 53 C50.5 54, 51.5 54, 51.5 53"
+            stroke="#333" stroke-width="1.5" stroke-linecap="round" />
+          <ellipse cx="42" cy="81" rx="4" ry="2.5" fill="#ffffff" stroke="#333" stroke-width="2" />
+          <ellipse cx="58" cy="81" rx="4" ry="2.5" fill="#ffffff" stroke="#333" stroke-width="2" />
+          <path d="M36 67 C32 67, 34 62, 40 62" stroke="#333" stroke-width="2" stroke-linecap="round" fill="none" />
+          <path d="M64 67 C68 67, 66 62, 60 62" stroke="#333" stroke-width="2" stroke-linecap="round" fill="none" />
+          <rect x="42" y="59" width="16" height="9" rx="2.5" fill="#ffccd5" stroke="#333" stroke-width="2" />
+          <rect x="44" y="56" width="12" height="3" rx="1" fill="#fff" stroke="#333" stroke-width="1.5" />
+          <line x1="50" y1="56" x2="50" y2="53" stroke="#ffd166" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M50 53 C49.5 51.5, 50.5 51.5, 50 50.5" stroke="#ef476f" stroke-width="1.2" stroke-linecap="round" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nút điều khiển toàn cục (xuất hiện sau khi mở thư) -->
+  <div id="global-controls" class="hidden">
+    <button id="back-btn" class="control-btn">Quay lại</button>
+    <button id="music-btn" class="control-btn">Tạm dừng nhạc</button>
+    <a href="https://panbap.github.io/galaxylovex/index.html?id=aHR0cHM6Ly9pLmliYi5jby9XTlF6U1Jkbi9waG90by0xLmpwZyxodHRwczovL2kuaWJiLmNvL0c0ZGRUVjRML3Bob3RvLTIuanBnLGh0dHBzOi8vaS5pYmIuY28vTFh6bVFTd1ovcGhvdG8tMy5qcGcsaHR0cHM6Ly9pLmliYi5jby94S3luZmc4US9waG90by00LmpwZw==&texts=U2luaCBOaOG6rXQgVnVpIFbhurssSMOjeSBjxrDhu51pIG5oaeG7gXUgbMOqbg==&music=e.mp3" target="_blank" id="explore-btn" class="control-btn" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Khám phá vũ trụ</a>
+  </div>
+
+  <div id="galaxy"></div>
+  <div id="rotatingContainer"></div>
+
+  <!-- Thư viện Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+  <!-- Mã chạy chính của ứng dụng -->
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
