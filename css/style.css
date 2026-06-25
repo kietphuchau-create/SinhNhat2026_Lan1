@@ -143,23 +143,6 @@ body {
   100% { transform: scale(1); box-shadow: 0 5px 20px rgba(229, 46, 113, 0.4); }
 }
 
-@keyframes rotatePhone {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(-90deg); }
-  100% { transform: rotate(-90deg); }
-}
-
-/* Xử lý xoay ngang trên điện thoại cho màn hình Start */
-@media screen and (orientation: portrait) and (max-width: 899px) {
-  #landscape-action { display: none !important; }
-  #portrait-message { display: flex !important; flex-direction: column; align-items: center; }
-}
-
-@media screen and (orientation: landscape), screen and (min-width: 900px) {
-  #landscape-action { display: block !important; }
-  #portrait-message { display: none !important; }
-}
-
 /* ==========================================
    MÀN HÌNH CHỌN BÀI HÁT (SONG SELECTION)
    ========================================== */
