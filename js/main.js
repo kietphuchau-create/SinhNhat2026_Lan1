@@ -75,7 +75,7 @@ function createPetal(container) {
  * Quản lý màn hình chọn bài hát
  * @param {HTMLElement} rotatingContainer 
  */
-function initSongSelection(rotatingContainer) {
+function initSongSelection(rotatingContainer, defaultAudio = null) {
   const songOverlay = document.getElementById('song-selection-overlay');
   const giftOverlay = document.getElementById('gift-overlay');
   
@@ -120,6 +120,11 @@ function initSongSelection(rotatingContainer) {
       // Xóa trạng thái active của các bài khác, thêm cho bài hiện tại
       songBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      
+      // Dừng nhạc mặc định nếu đang phát
+      if (defaultAudio) {
+        defaultAudio.pause();
+      }
       
       // Phát nhạc nghe thử
       stopPreview();
@@ -347,21 +352,30 @@ window.addEventListener('DOMContentLoaded', () => {
   // 2. Khởi tạo tương tác xoay 3D
   initRotation(rotatingContainer);
   
-  // 3. Kích hoạt màn hình chọn bài hát
-  initSongSelection(rotatingContainer);
+  // 3. Kích hoạt màn hình chào sân
+  initStartScreen(rotatingContainer);
+});
 
-  // 4. Yêu cầu full màn hình và xoay ngang cho thiết bị di động khi chạm vào màn hình
-  document.addEventListener('click', function requestLandscapeFullscreen() {
-    // Nhận diện điện thoại hoặc màn hình nhỏ
+function initStartScreen(rotatingContainer) {
+  const startOverlay = document.getElementById('start-overlay');
+  const songOverlay = document.getElementById('song-selection-overlay');
+  const btnStart = document.getElementById('btn-start');
+
+  if (!startOverlay || !btnStart) {
+    if (songOverlay) songOverlay.classList.remove('hidden');
+    initSongSelection(rotatingContainer, null);
+    return;
+  }
+
+  btnStart.addEventListener('click', () => {
+    // 1. Yêu cầu full màn hình và xoay ngang cho thiết bị di động
     if (window.innerWidth <= 900 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       const docElm = document.documentElement;
-      
       const tryLockOrientation = () => {
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock('landscape').catch(err => console.log("Không thể khóa hướng:", err));
         }
       };
-
       if (docElm.requestFullscreen) {
         docElm.requestFullscreen().then(tryLockOrientation).catch(err => console.log("Lỗi fullscreen:", err));
       } else if (docElm.webkitRequestFullscreen) { /* Safari */
@@ -372,7 +386,18 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(tryLockOrientation, 500);
       }
     }
-    // Gỡ bỏ sự kiện sau khi đã chạy lần đầu
-    document.removeEventListener('click', requestLandscapeFullscreen);
-  }, { once: true });
-});
+
+    // 2. Phát nhạc mặc định
+    let defaultAudio = new Audio('assets/audio/Mặc định/Ừ Có Anh Đây.mp3');
+    defaultAudio.loop = true;
+    defaultAudio.play().catch(e => console.log("Lỗi phát nhạc:", e));
+
+    // 3. Ẩn màn hình Start và hiện màn hình Chọn Bài
+    startOverlay.classList.add('fade-out');
+    setTimeout(() => {
+      startOverlay.style.display = 'none';
+      if (songOverlay) songOverlay.classList.remove('hidden');
+      initSongSelection(rotatingContainer, defaultAudio);
+    }, 600);
+  });
+}

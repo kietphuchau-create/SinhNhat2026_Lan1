@@ -15,8 +15,20 @@
 
 <body>
 
-  <!-- Đã bỏ landscape warning để tối ưu tốt cho cả điện thoại màn dọc và ngang -->  <!-- Màn hình chọn bài hát -->
-  <div id="song-selection-overlay">
+  <!-- Màn hình chào sân để kích hoạt quyền trình duyệt -->
+  <div id="start-overlay">
+    <div class="start-container glass-panel" style="animation: none;">
+      <div class="music-waves" style="margin-bottom: 20px;">
+        <span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span>
+      </div>
+      <h2 class="glow-text" style="font-size: 36px; margin-bottom: 10px;">Một Món Quà Nhỏ 🎁</h2>
+      <p style="color: #ddd; margin-bottom: 30px; font-size: 16px;">Vui lòng chạm để bắt đầu trải nghiệm tốt nhất</p>
+      <button id="btn-start" class="premium-btn confirm-btn" style="padding: 15px 40px; font-size: 20px; animation: pulseBtn 2s infinite;">Bắt Đầu</button>
+    </div>
+  </div>
+
+  <!-- Màn hình chọn bài hát -->
+  <div id="song-selection-overlay" class="hidden">
     <!-- Nền mờ kính -->
     <div class="song-selection-container glass-panel" id="song-list-container">
       <h2 class="song-selection-title glow-text">Giai Điệu Của Bạn 🎶</h2>
