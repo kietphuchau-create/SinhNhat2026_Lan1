@@ -112,6 +112,264 @@ body {
 }
 
 /* ==========================================
+   MÀN HÌNH CHỌN BÀI HÁT (SONG SELECTION)
+   ========================================== */
+#song-selection-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(20, 15, 38, 0.9) 0%, rgba(45, 10, 35, 0.9) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
+  font-family: 'Outfit', sans-serif;
+}
+
+#song-selection-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 64, 129, 0.1) inset;
+  border-radius: 24px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+  animation: floatPanel 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatPanel {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+.glow-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 42px;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 10px rgba(229, 46, 113, 0.3);
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.song-selection-subtitle {
+  color: #ddd;
+  font-size: 16px;
+  margin-bottom: 25px;
+  font-weight: 300;
+}
+
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  width: 100%;
+}
+
+.song-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.song-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(229, 46, 113, 0.2);
+  border-color: rgba(229, 46, 113, 0.4);
+}
+
+.song-card.active {
+  background: rgba(229, 46, 113, 0.2);
+  border-color: #e52e71;
+  box-shadow: 0 0 20px rgba(229, 46, 113, 0.5);
+  transform: translateY(-5px) scale(1.05);
+}
+
+.song-card.active .song-icon {
+  animation: spinRecord 3s linear infinite;
+}
+
+.song-icon {
+  font-size: 28px;
+  margin-right: 15px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+@keyframes spinRecord {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.song-info {
+  text-align: left;
+}
+
+.song-info h3 {
+  color: #fff;
+  font-size: 15px;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.song-info p {
+  color: #aaa;
+  font-size: 12px;
+  margin: 0;
+}
+
+.selected-song-highlight {
+  font-size: 22px;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(229, 46, 113, 0.3);
+}
+
+.song-confirm-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  width: 100%;
+}
+
+.premium-btn {
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.premium-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+  z-index: -1;
+}
+
+.cancel-btn {
+  background: #4a4a4a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cancel-btn:hover {
+  background: #606060;
+  transform: translateY(-2px);
+}
+
+.confirm-btn {
+  background: linear-gradient(45deg, #ff4081, #e52e71);
+  box-shadow: 0 5px 20px rgba(229, 46, 113, 0.4);
+}
+
+.confirm-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(229, 46, 113, 0.6);
+}
+
+/* Hiệu ứng sóng nhạc */
+.music-waves {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.wave {
+  display: block;
+  width: 6px;
+  height: 10px;
+  background: #ff4081;
+  border-radius: 3px;
+  animation: wavePulse 1s ease-in-out infinite;
+}
+
+.wave:nth-child(2) { animation-delay: 0.2s; height: 20px; }
+.wave:nth-child(3) { animation-delay: 0.4s; height: 35px; }
+.wave:nth-child(4) { animation-delay: 0.6s; height: 20px; }
+.wave:nth-child(5) { animation-delay: 0.8s; height: 10px; }
+
+@keyframes wavePulse {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+  50% { transform: scaleY(1.2); opacity: 1; }
+}
+
+/* Đếm ngược dạng hình tròn SVG */
+.circular-countdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-active {
+  stroke-dasharray: 326; /* Chu vi: 2 * PI * 52 ≈ 326 */
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.countdown-text {
+  position: absolute;
+  font-size: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255, 64, 129, 0.8);
+}
+
+#song-list-container.hidden,
+#song-confirm-container.hidden,
+#song-countdown-container.hidden {
+  display: none;
+}
+
+/* ==========================================
    MÀN HÌNH HỘP QUÀ MỞ ĐẦU (GIFT OVERLAY)
    ========================================== */
 #gift-overlay {
@@ -129,7 +387,8 @@ body {
   overflow: hidden;
 }
 
-#gift-overlay.fade-out {
+#gift-overlay.fade-out,
+#gift-overlay.hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

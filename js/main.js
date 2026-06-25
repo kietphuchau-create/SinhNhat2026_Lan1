@@ -72,11 +72,147 @@ function createPetal(container) {
 }
 
 /**
- * Quản lý các màn hình chào mừng và kích hoạt nhạc nền, hiệu ứng theo từng giai đoạn
- * @param {string} audioPath 
+ * Quản lý màn hình chọn bài hát
  * @param {HTMLElement} rotatingContainer 
  */
-function initGiftBox(audioPath, rotatingContainer) {
+function initSongSelection(rotatingContainer) {
+  const songOverlay = document.getElementById('song-selection-overlay');
+  const giftOverlay = document.getElementById('gift-overlay');
+  
+  // Lấy danh sách các thẻ bài hát
+  const songBtns = document.querySelectorAll('.song-card');
+  
+  const listContainer = document.getElementById('song-list-container');
+  const confirmContainer = document.getElementById('song-confirm-container');
+  const countdownContainer = document.getElementById('song-countdown-container');
+  const selectedSongNameEl = document.getElementById('selected-song-name');
+  const countdownNumberEl = document.getElementById('countdown-number');
+  const progressCircle = document.querySelector('.progress-active');
+  const circumference = 326; // Tính theo công thức chu vi đường tròn r=52
+  
+  const btnCancel = document.getElementById('btn-cancel-song');
+  const btnConfirm = document.getElementById('btn-confirm-song');
+  const btnCancelCountdown = document.getElementById('btn-cancel-countdown');
+
+  if (!songOverlay || !songBtns.length) {
+    if (giftOverlay) giftOverlay.classList.remove('hidden');
+    initGiftBox('assets/audio/background.mp3', rotatingContainer);
+    return;
+  }
+
+  let currentSelectedAudio = null;
+  let previewAudio = null;
+  let countdownTimer = null;
+
+  // Hàm dừng nhạc nghe thử
+  const stopPreview = () => {
+    if (previewAudio) {
+      previewAudio.pause();
+      previewAudio.currentTime = 0;
+    }
+  };
+
+  songBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentSelectedAudio = btn.getAttribute('data-audio');
+      const songName = btn.getAttribute('data-name') || "Bài hát";
+      
+      // Xóa trạng thái active của các bài khác, thêm cho bài hiện tại
+      songBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // Phát nhạc nghe thử
+      stopPreview();
+      previewAudio = new Audio(currentSelectedAudio);
+      previewAudio.play().catch(e => console.log("Không thể tự phát nhạc nghe thử:", e));
+      
+      // Chuyển sang màn hình xác nhận
+      selectedSongNameEl.textContent = `${songName}`;
+      listContainer.classList.add('hidden');
+      confirmContainer.classList.remove('hidden');
+    });
+  });
+
+  if (btnCancel) {
+    btnCancel.addEventListener('click', () => {
+      stopPreview();
+      // Bỏ đánh dấu bài hát đang chọn
+      songBtns.forEach(b => b.classList.remove('active'));
+      // Quay lại màn hình chọn
+      confirmContainer.classList.add('hidden');
+      listContainer.classList.remove('hidden');
+      currentSelectedAudio = null;
+    });
+  }
+
+  if (btnConfirm) {
+    btnConfirm.addEventListener('click', () => {
+      if (!currentSelectedAudio) return;
+      
+      // Chuyển sang màn hình đếm ngược
+      confirmContainer.classList.add('hidden');
+      countdownContainer.classList.remove('hidden');
+      
+      let timeLeft = 3;
+      countdownNumberEl.textContent = timeLeft;
+      if (progressCircle) {
+        progressCircle.style.strokeDashoffset = '0';
+      }
+
+      countdownTimer = setInterval(() => {
+        timeLeft--;
+        countdownNumberEl.textContent = timeLeft;
+        
+        if (progressCircle) {
+           const offset = circumference - (timeLeft / 3) * circumference;
+           progressCircle.style.strokeDashoffset = offset;
+        }
+        
+        if (timeLeft <= 0) {
+          clearInterval(countdownTimer);
+          // Không gọi stopPreview() ở đây nữa để nhạc tiếp tục phát mượt mà
+          
+          // Ẩn màn hình chọn bài
+          songOverlay.classList.add('fade-out');
+          setTimeout(() => {
+            songOverlay.style.display = 'none';
+            
+            // Hiện hộp quà
+            if (giftOverlay) {
+              giftOverlay.classList.remove('hidden');
+              requestAnimationFrame(() => {
+                // Truyền trực tiếp đối tượng previewAudio vào hộp quà
+                initGiftBox(previewAudio || currentSelectedAudio, rotatingContainer);
+              });
+            }
+          }, 600); // Đợi hiệu ứng fade-out hoàn tất
+        }
+      }, 1000);
+    });
+  }
+
+  if (btnCancelCountdown) {
+    btnCancelCountdown.addEventListener('click', () => {
+      clearInterval(countdownTimer);
+      stopPreview();
+      
+      // Bỏ đánh dấu bài hát đang chọn
+      songBtns.forEach(b => b.classList.remove('active'));
+      
+      // Quay lại màn hình chọn bài
+      countdownContainer.classList.add('hidden');
+      listContainer.classList.remove('hidden');
+      currentSelectedAudio = null;
+    });
+  }
+}
+
+/**
+ * Quản lý các màn hình chào mừng và kích hoạt nhạc nền, hiệu ứng theo từng giai đoạn
+ * @param {string|HTMLAudioElement} audioData - Đường dẫn file mp3 hoặc đối tượng Audio đã khởi tạo
+ * @param {HTMLElement} rotatingContainer 
+ */
+function initGiftBox(audioData, rotatingContainer) {
   const giftOverlay = document.getElementById('gift-overlay');
   const giftBox = document.querySelector('.gift-box');
   const introOverlay = document.getElementById('intro-overlay');
@@ -98,13 +234,25 @@ function initGiftBox(audioPath, rotatingContainer) {
     if (openedGift) return;
     openedGift = true;
 
-    // Phát nhạc nền
-    audio = new Audio(audioPath);
+    // Thiết lập nhạc nền
+    if (audioData instanceof Audio) {
+      audio = audioData;
+    } else {
+      audio = new Audio(audioData);
+    }
     audio.loop = true;
-    audio.play().then(() => {
+    
+    // Nếu nhạc đang không phát thì phát lên
+    if (audio.paused) {
+      audio.play().then(() => {
+        isPlaying = true;
+        if (musicBtn) musicBtn.textContent = 'Tạm dừng nhạc';
+      }).catch(err => console.log("Không thể tự động phát nhạc:", err));
+    } else {
+      // Nhạc đang phát sẵn (từ lúc nghe thử), chỉ cần cập nhật trạng thái
       isPlaying = true;
       if (musicBtn) musicBtn.textContent = 'Tạm dừng nhạc';
-    }).catch(err => console.log("Không thể tự động phát nhạc:", err));
+    }
 
     // Chạy hiệu ứng mở nắp hộp quà
     giftBox.classList.add('open-animation');
@@ -199,8 +347,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // 2. Khởi tạo tương tác xoay 3D
   initRotation(rotatingContainer);
   
-  // 3. Kích hoạt chu trình mở quà và nhạc nền
-  initGiftBox('assets/audio/background.mp3', rotatingContainer);
+  // 3. Kích hoạt màn hình chọn bài hát
+  initSongSelection(rotatingContainer);
 
   // 4. Yêu cầu full màn hình và xoay ngang cho thiết bị di động khi chạm vào màn hình
   document.addEventListener('click', function requestLandscapeFullscreen() {

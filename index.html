@@ -27,8 +27,93 @@
     </div>
   </div>
 
+  <!-- Màn hình chọn bài hát -->
+  <div id="song-selection-overlay">
+    <!-- Nền mờ kính -->
+    <div class="song-selection-container glass-panel" id="song-list-container">
+      <h2 class="song-selection-title glow-text">Giai Điệu Của Bạn 🎶</h2>
+      <p class="song-selection-subtitle">Hãy chọn một bài hát để bắt đầu món quà</p>
+      
+      <div class="song-grid">
+        <div class="song-card" data-audio="assets/audio/Chẳng Cần Ngày Mai (H2O Remix).mp3" data-name="Chẳng Cần Ngày Mai">
+          <div class="song-icon">💿</div>
+          <div class="song-info">
+            <h3>Chẳng Cần Ngày Mai</h3>
+            <p>H2O Remix</p>
+          </div>
+        </div>
+        
+        <div class="song-card" data-audio="assets/audio/Giấc Mơ Của Em (CM1X Remix).mp3" data-name="Giấc Mơ Của Em">
+          <div class="song-icon">💿</div>
+          <div class="song-info">
+            <h3>Giấc Mơ Của Em</h3>
+            <p>CM1X Remix</p>
+          </div>
+        </div>
+
+        <div class="song-card" data-audio="assets/audio/Nhắm Mắt Thấy Mùa Hè (From _Nhắm Mắt Thấy Mùa Hè_).mp3" data-name="Nhắm Mắt Thấy Mùa Hè">
+          <div class="song-icon">💿</div>
+          <div class="song-info">
+            <h3>Nhắm Mắt Thấy Mùa Hè</h3>
+            <p>Acoustic Chill</p>
+          </div>
+        </div>
+
+        <div class="song-card" data-audio="assets/audio/kHONG_bUONG.MP3" data-name="Không Buông">
+          <div class="song-icon">💿</div>
+          <div class="song-info">
+            <h3>Không Buông</h3>
+            <p>Pop Ballad</p>
+          </div>
+        </div>
+
+        <div class="song-card" data-audio="assets/audio/lE_Duong.mp3" data-name="Lệ Đường">
+          <div class="song-icon">💿</div>
+          <div class="song-info">
+            <h3>Lệ Đường</h3>
+            <p>Nhạc Tâm Trạng</p>
+          </div>
+        </div>
+
+        <div class="song-card" data-audio="assets/audio/Mặc định/Ừ Có Anh Đây.mp3" data-name="Ừ Có Anh Đây">
+          <div class="song-icon">💿</div>
+          <div class="song-info">
+            <h3>Ừ Có Anh Đây</h3>
+            <p>Bản nhạc ấm áp</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Container xác nhận -->
+    <div class="song-selection-container glass-panel hidden" id="song-confirm-container">
+      <div class="music-waves">
+        <span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span><span class="wave"></span>
+      </div>
+      <h2 class="song-selection-title glow-text">Bài Hát Đang Phát...</h2>
+      <p id="selected-song-name" class="selected-song-highlight">Bạn đã chọn: ...</p>
+      <div class="song-confirm-actions">
+        <button id="btn-cancel-song" class="premium-btn cancel-btn">Quay lại</button>
+        <button id="btn-confirm-song" class="premium-btn confirm-btn">Tiếp tục mở quà 🎁</button>
+      </div>
+    </div>
+
+    <!-- Container đếm ngược -->
+    <div class="song-selection-container glass-panel hidden" id="song-countdown-container">
+      <h2 class="song-selection-title glow-text">Đang chuẩn bị...</h2>
+      <div class="circular-countdown">
+        <svg class="progress-ring" width="120" height="120">
+          <circle class="progress-ring__circle" stroke="rgba(255, 64, 129, 0.2)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+          <circle class="progress-ring__circle progress-active" stroke="#ff4081" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+        </svg>
+        <div id="countdown-number" class="countdown-text">3</div>
+      </div>
+      <button id="btn-cancel-countdown" class="premium-btn cancel-btn" style="margin-top: 30px;">Hủy để chọn lại</button>
+    </div>
+  </div>
+
   <!-- Màn hình hộp quà mở đầu -->
-  <div id="gift-overlay">
+  <div id="gift-overlay" class="hidden">
     <div class="gift-container">
       <div class="gift-box">
         <div class="bow">
