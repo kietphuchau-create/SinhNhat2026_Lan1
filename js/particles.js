@@ -1,10 +1,12 @@
 const messages = [
-  "Chúc mừng sinh nhật 26/06",
-  "Phận là người đẹp nhất 💖",
-  "Hãy cười nhiều lên nhé",
-  "Nụ cười của phận rất đẹp 💗",
-  "vẫn còn nợ mình một cặp mắt nhé, khóc là mình đến lấy đó 💖",
-  "Phận thật sự rất đẹp 💖"
+  "Chúc mừng sinh nhật 26/06 nhé Phận 💖",
+  "Học xa nhà vất vả rồi, cô gái nhỏ cố lên nhé! 🌸",
+  "Lúc nào nhớ nhà hay mệt mỏi, cứ khóc một chút rồi lại mạnh mẽ nha 💗",
+  "Nhìn bề ngoài hay nói cứng vậy thôi, chứ mong manh lắm đúng không? 🥺",
+  "Dù ở xa, nhưng mọi người ở nhà luôn yêu thương và ủng hộ Phận 💖",
+  "Cố gắng lên nhé, hãy luôn giữ nụ cười thật tươi trên môi! ✨",
+  "Bạn là một cô gái rất tuyệt vời, đừng cố gồng gánh mọi thứ một mình 🌷",
+  "Sinh nhật vui vẻ, tuổi mới thật bình an và đạt được ước mơ nhé! 🎁"
 ];
 
 const imageURLs = [
@@ -38,7 +40,7 @@ const colors = [
   { text: "#e0f7fa", shadow: "rgba(224, 247, 250, 0.8)" }
 ];
 
-const maxParticles = 120;
+const maxParticles = 30; // Giảm số lượng tối đa để không quá dày đặc
 const activeParticles = new Set();
 
 /**
@@ -71,7 +73,7 @@ function showImageCenter(src) {
  */
 export function createParticle(container, type = 'text') {
   const isMobile = window.innerWidth < 768;
-  const currentMaxParticles = isMobile ? 45 : maxParticles;
+  const currentMaxParticles = isMobile ? 15 : maxParticles;
   if (activeParticles.size >= currentMaxParticles) return;
 
   const el = type === 'text' ? document.createElement('div') : document.createElement('img');
@@ -79,6 +81,14 @@ export function createParticle(container, type = 'text') {
     const isIcon = Math.random() < 0.3;
     el.className = 'text-particle';
     el.textContent = isIcon ? icons[Math.floor(Math.random() * icons.length)] : messages[Math.floor(Math.random() * messages.length)];
+    
+    // Giới hạn độ rộng chữ để tự xuống dòng, giúp dễ đọc
+    if (!isIcon) {
+      el.style.maxWidth = '300px';
+      el.style.textAlign = 'center';
+      el.style.lineHeight = '1.5';
+      el.style.wordWrap = 'break-word';
+    }
 
     // Scale font size down on mobile
     const baseFontSize = isIcon ? (isMobile ? 14 : 20) : (isMobile ? 12 : 18);
@@ -131,7 +141,7 @@ export function createParticle(container, type = 'text') {
   const z = -Math.random() * 300;
   const startY = -50;
   const endY = window.innerHeight + 50;
-  const duration = 7000 + Math.random() * 4000;
+  const duration = 18000 + Math.random() * 12000; // Tăng thời gian trôi (từ 18s đến 30s) để chữ trôi chậm hơn
   const t0 = performance.now();
 
   function animate(t) {
@@ -169,7 +179,7 @@ export function startParticlesLoop(container) {
   let last = 0;
   function tick(t) {
     const isMobile = window.innerWidth < 768;
-    const interval = isMobile ? 700 : 300; // Slower spawn rate on mobile
+    const interval = isMobile ? 2500 : 1500; // Tăng khoảng thời gian xuất hiện để giảm mật độ
     if (t - last > interval) {
       createParticle(container, 'text');
       const imageChance = isMobile ? 0.35 : 0.5; // Fewer images on mobile
