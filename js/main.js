@@ -104,6 +104,33 @@ function initSongSelection(rotatingContainer) {
   let previewAudio = null;
   let countdownTimer = null;
 
+  // Nhạc nền mặc định cho màn hình chọn bài
+  let defaultBgAudio = new Audio('assets/audio/Mặc định/Ừ Có Anh Đây.mp3');
+  defaultBgAudio.loop = true;
+  defaultBgAudio.volume = 0.5;
+  defaultBgAudio.autoplay = true;
+
+  const playDefaultBg = () => {
+    if (!previewAudio && defaultBgAudio.paused) {
+      const p = defaultBgAudio.play();
+      if (p !== undefined) {
+        p.then(() => {
+          ['click', 'touchstart', 'keydown'].forEach(evt => document.removeEventListener(evt, playDefaultBg));
+        }).catch(e => console.log("Vẫn bị chặn autoplay:", e));
+      }
+    }
+  };
+
+  // Thử phát ngay, nếu trình duyệt chặn thì chờ người dùng tương tác (click, chạm, ấn phím)
+  const p = defaultBgAudio.play();
+  if (p !== undefined) {
+    p.catch(() => {
+      ['click', 'touchstart', 'keydown'].forEach(evt => {
+        document.addEventListener(evt, playDefaultBg);
+      });
+    });
+  }
+
   // Hàm dừng nhạc nghe thử
   const stopPreview = () => {
     if (previewAudio) {
@@ -114,6 +141,9 @@ function initSongSelection(rotatingContainer) {
 
   songBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      // Tạm dừng nhạc nền mặc định
+      if (defaultBgAudio) defaultBgAudio.pause();
+
       currentSelectedAudio = btn.getAttribute('data-audio');
       const songName = btn.getAttribute('data-name') || "Bài hát";
       
@@ -138,6 +168,10 @@ function initSongSelection(rotatingContainer) {
       stopPreview();
       // Bỏ đánh dấu bài hát đang chọn
       songBtns.forEach(b => b.classList.remove('active'));
+      
+      // Phát lại nhạc nền mặc định
+      if (defaultBgAudio) defaultBgAudio.play().catch(e => console.log(e));
+
       // Quay lại màn hình chọn
       confirmContainer.classList.add('hidden');
       listContainer.classList.remove('hidden');
@@ -198,6 +232,9 @@ function initSongSelection(rotatingContainer) {
       
       // Bỏ đánh dấu bài hát đang chọn
       songBtns.forEach(b => b.classList.remove('active'));
+      
+      // Phát lại nhạc nền mặc định
+      if (defaultBgAudio) defaultBgAudio.play().catch(e => console.log(e));
       
       // Quay lại màn hình chọn bài
       countdownContainer.classList.add('hidden');
