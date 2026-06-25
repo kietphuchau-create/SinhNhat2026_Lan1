@@ -193,6 +193,7 @@ body {
   padding: 12px 16px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
 }
 
 .song-card:hover {
@@ -217,6 +218,7 @@ body {
   font-size: 28px;
   margin-right: 15px;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  flex-shrink: 0;
 }
 
 @keyframes spinRecord {
@@ -226,6 +228,8 @@ body {
 
 .song-info {
   text-align: left;
+  flex: 1;
+  min-width: 0;
 }
 
 .song-info h3 {
@@ -236,13 +240,15 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 140px;
 }
 
 .song-info p {
   color: #aaa;
   font-size: 12px;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .selected-song-highlight {
@@ -1202,56 +1208,111 @@ body {
 }
 
 /* ==========================================
-   CẢNH BÁO XOAY MÀN HÌNH (LANDSCAPE WARNING)
+   TỐI ƯU HÓA CHO ĐIỆN THOẠI (MOBILE OPTIMIZATION)
    ========================================== */
-#landscape-warning {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #1a1c29 0%, #0d0e15 100%);
-  z-index: 100000;
-  color: #fff;
-  text-align: center;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
+@media screen and (max-width: 768px) {
+  /* Tối ưu giao diện chọn bài hát */
+  .glass-panel {
+    padding: 25px 15px;
+    width: 95%;
+    border-radius: 18px;
+    max-height: 85vh;
+  }
 
-#landscape-warning .warning-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 400px;
-}
+  .glow-text {
+    font-size: 28px;
+  }
 
-#landscape-warning h2 {
-  font-family: 'Outfit', sans-serif;
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: #ffca3a;
-}
+  .song-selection-subtitle {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
 
-#landscape-warning p {
-  font-family: 'Outfit', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #e2e8f0;
-}
+  .song-grid {
+    grid-template-columns: 1fr; /* 1 cột trên điện thoại dọc */
+    gap: 10px;
+    max-height: 45vh;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
 
-@keyframes rotatePhone {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(-90deg); }
-  100% { transform: rotate(-90deg); }
-}
+  /* Tùy chỉnh thanh cuộn cho song-grid trên mobile */
+  .song-grid::-webkit-scrollbar {
+    width: 4px;
+  }
+  .song-grid::-webkit-scrollbar-thumb {
+    background: rgba(229, 46, 113, 0.5);
+    border-radius: 4px;
+  }
 
-/* Chỉ hiển thị trên thiết bị di động khi ở chế độ màn hình dọc */
-@media screen and (max-width: 899px) and (orientation: portrait) {
-  #landscape-warning {
-    display: flex;
+  .song-card {
+    padding: 10px 12px;
+  }
+
+  .song-icon {
+    font-size: 24px;
+    margin-right: 12px;
+  }
+
+  .song-info h3 {
+    font-size: 14px;
+  }
+
+  .song-info p {
+    font-size: 11px;
+  }
+
+  .song-confirm-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .premium-btn {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  .circular-countdown {
+    transform: scale(0.8);
+  }
+
+  /* Tối ưu hộp quà */
+  .gift-box {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .gift-lid {
+    width: 130px;
+    height: 35px;
+    left: -5px;
+  }
+
+  .gift-text {
+    font-size: 20px;
+  }
+
+  /* Tối ưu nội dung thư */
+  .intro-content {
+    width: 95%;
+    padding: 30px 20px;
+  }
+
+  .avatar-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .greeting-title {
+    font-size: 28px;
+  }
+
+  .greeting-message {
+    font-size: 16px;
+  }
+
+  .open-letter-btn {
+    padding: 12px 25px;
+    font-size: 16px;
   }
 }
